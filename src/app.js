@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import { connectDB } from "./config/StyleDecor.config.js";
+import StyleDecorRoute from "./routes/StyleDecorRoute.js";
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(express.json());
 connectDB();
 
 // Routes
+app.use("/api/services", StyleDecorRoute);
 
 app.get("/", (req, res) => res.send("Welcome to backend server!"));
 
