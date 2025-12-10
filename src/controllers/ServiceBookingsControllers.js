@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import { servicesBookingsCollection } from "../models/ServiceBookings.js";
 
 // * Get My Bookings
@@ -23,5 +24,14 @@ export const getMyBookings = async (req, res) => {
 export const createServiceBookings = async (req, res) => {
   const doc = req.body;
   const result = await servicesBookingsCollection().insertOne(doc);
+  res.send(result);
+};
+
+// * Delete or Cancel Booking
+export const deleteBooking = async (req, res) => {
+  const id = req.params.id;
+  const result = await servicesBookingsCollection().deleteOne({
+    _id: new ObjectId(id),
+  });
   res.send(result);
 };
