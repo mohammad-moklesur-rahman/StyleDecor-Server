@@ -1,9 +1,12 @@
 import express from "express";
-import { createService } from "../controllers/StyleDecorController.js";
+import { createService, getAllService } from "../controllers/StyleDecorController.js";
 
 const router = express.Router();
 
-// Post Route
+// Get Route for All services
+router.get("/", getAllService)
+
+// Post Route for creating a service
 router.post("/", createService);
 
 
