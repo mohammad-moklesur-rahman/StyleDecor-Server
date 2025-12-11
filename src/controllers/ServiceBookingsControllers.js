@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import { servicesBookingsCollection } from "../models/ServiceBookings.js";
+import { servicesBookingsCollection } from "../models/ServiceBookingsModel.js";
 
 // * Get My Bookings
 export const getMyBookings = async (req, res) => {
