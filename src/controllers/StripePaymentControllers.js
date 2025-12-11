@@ -7,8 +7,26 @@ import { stripePaymentsCollection } from "../models/StripePaymentModel.js";
 dotenv.config();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-// CREATE CHECKOUT SESSION
+// * Get My Payments History
+export const getMyPaymentsHistory = async (req, res) => {
+  try {
+    const userEmail = req.query.email;
 
+    if (!userEmail) {
+      return res.status(400).send({ message: "email required" });
+    }
+
+    const myBookings = await stripePaymentsCollection()
+      .find({ userEmail: userEmail })
+      .toArray();
+
+    res.send(myBookings);
+  } catch (error) {
+    res.status(500).send({ message: "Failed to fetch" });
+  }
+};
+
+// CREATE CHECKOUT SESSION
 export const createCheckoutSession = async (req, res) => {
   try {
     const { bookingId, userId, userEmail } = req.body;
