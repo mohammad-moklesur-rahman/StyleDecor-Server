@@ -1,5 +1,6 @@
 import express from "express";
 import { createService, getAllService, getServiceById } from "../controllers/StyleDecorController.js";
+import verifyJWT from "../middleware/jwtAuthMiddleware.js";
 
 const router = express.Router();
 
@@ -10,7 +11,7 @@ router.get("/", getAllService)
 router.get("/:id", getServiceById)
 
 // Post Route for creating a service
-router.post("/", createService);
+router.post("/", verifyJWT, createService);
 
 
 export default router;

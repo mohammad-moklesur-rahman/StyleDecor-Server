@@ -1,6 +1,6 @@
 import { usersCollection } from "../models/UsersModel.js";
 
-// * Add Services Bookings
+// * Add new user or update last_loggedIn if user exists
 export const createUsers = async (req, res) => {
   const userData = req.body;
   userData.created_at = new Date().toISOString();
