@@ -8,11 +8,11 @@ import {
 
 const router = express.Router();
 
-// Get Route for Admin to Get All Bookings
-router.get("/", getAllBookings)
-
 // Get Route for Getting My Bookings
 router.get("/", getMyBookings);
+
+// Get Route for Admin to Get All Bookings
+router.get("/get-admin", getAllBookings);
 
 // Post Route for creating a service Bookings
 router.post("/", createServiceBookings);
