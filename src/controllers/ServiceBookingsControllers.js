@@ -1,6 +1,16 @@
 import { ObjectId } from "mongodb";
 import { servicesBookingsCollection } from "../models/ServiceBookingsModel.js";
 
+// Get All Bookings - Admin
+export const getAllBookings = async (req, res) => {
+  const bookings = await servicesBookingsCollection()
+    .find()
+    .sort({ createdAt: -1 })
+    .toArray();
+
+  res.send(bookings);
+};
+
 // * Get My Bookings
 export const getMyBookings = async (req, res) => {
   try {
