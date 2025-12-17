@@ -1,6 +1,26 @@
 import { ObjectId } from "mongodb";
 import { servicesBookingsCollection } from "../models/ServiceBookingsModel.js";
 
+// Get All Paid Bookings - Admin
+export const getAllPaidBookings = async (req, res) => {
+  try {
+    const { status } = req.query;
+
+    // Build query dynamically
+    const query = { dec_status: { $ne: "assigned" } };
+
+    if (status) {
+      query.dec_status = status; // "not assigned"
+    }
+
+    const bookings = await servicesBookingsCollection().find(query).toArray();
+
+    res.send(bookings);
+  } catch (error) {
+    res.status(500).send({ message: "Failed to load bookings" });
+  }
+};
+
 // Get All Bookings - Admin
 export const getAllBookings = async (req, res) => {
   const bookings = await servicesBookingsCollection()

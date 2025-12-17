@@ -3,6 +3,7 @@ import {
   createServiceBookings,
   deleteBooking,
   getAllBookings,
+  getAllPaidBookings,
   getMyBookings,
 } from "../controllers/ServiceBookingsControllers.js";
 
@@ -13,6 +14,9 @@ router.get("/", getMyBookings);
 
 // Get Route for Admin to Get All Bookings
 router.get("/get-admin", getAllBookings);
+
+// Get Route for admin to get all paid bookings
+router.get("/paid", getAllPaidBookings);
 
 // Post Route for creating a service Bookings
 router.post("/", createServiceBookings);
