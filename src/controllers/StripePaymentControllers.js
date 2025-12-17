@@ -105,7 +105,7 @@ export const savePaymentInfo = async (req, res) => {
     // Update booking paid status
     await servicesBookingsCollection().updateOne(
       { _id: new ObjectId(session.metadata.bookingId) },
-      { $set: { paid: true, status: "Completed" } }
+      { $set: { paid: true, status: "Completed", decoratorAssigned: false } }
     );
 
     res.send({ message: "Payment saved successfully" });
