@@ -11,7 +11,7 @@ export const getAvailableDecorators = async (req, res) => {
   res.send(decorators);
 };
 
-// 
+// Get All Decorators
 export const getAllDecorators = async (req, res) => {
   const decorators = await decoratorsCollection()
     .find()
@@ -19,6 +19,23 @@ export const getAllDecorators = async (req, res) => {
     .toArray();
 
   res.send(decorators);
+};
+
+// Approve decorator
+export const approveDecorator = async (req, res) => {
+  const { decoratorId } = req.params;
+
+  await decoratorsCollection().updateOne(
+    { _id: new ObjectId(decoratorId) },
+    {
+      $set: {
+        status: "approved",
+        isAvailable: true,
+      },
+    }
+  );
+
+  res.send({ success: true });
 };
 
 // Assign a decorator to a booking
