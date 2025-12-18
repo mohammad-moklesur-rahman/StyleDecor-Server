@@ -2,6 +2,7 @@ import express from "express";
 import {
   approveDecorator,
   assignDecorator,
+  disableDecorator,
   getAllDecorators,
   getAvailableDecorators,
 } from "../controllers/DecoratorsControllers.js";
@@ -16,6 +17,9 @@ router.get("/available", getAvailableDecorators);
 
 // Patch route for approve decorator
 router.patch("/approve/:decoratorId", approveDecorator);
+
+// Patch route for disable decorator
+router.patch("/disable/:decoratorId", disableDecorator);
 
 // Patch route to assign a decorator to a booking
 router.patch("/assign-decorator", assignDecorator);

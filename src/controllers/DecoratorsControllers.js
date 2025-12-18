@@ -38,6 +38,23 @@ export const approveDecorator = async (req, res) => {
   res.send({ success: true });
 };
 
+// Disable Decorator
+export const disableDecorator = async (req, res) => {
+  const { decoratorId } = req.params;
+
+  await decoratorsCollection().updateOne(
+    { _id: new ObjectId(decoratorId) },
+    {
+      $set: {
+        status: "disabled",
+        isAvailable: false,
+      },
+    }
+  );
+
+  res.send({ success: true });
+};
+
 // Assign a decorator to a booking
 export const assignDecorator = async (req, res) => {
   const { bookingId, decoratorId } = req.body;
