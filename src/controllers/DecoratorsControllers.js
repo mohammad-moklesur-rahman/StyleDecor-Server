@@ -11,6 +11,16 @@ export const getAvailableDecorators = async (req, res) => {
   res.send(decorators);
 };
 
+// 
+export const getAllDecorators = async (req, res) => {
+  const decorators = await decoratorsCollection()
+    .find()
+    .sort({ createdAt: -1 })
+    .toArray();
+
+  res.send(decorators);
+};
+
 // Assign a decorator to a booking
 export const assignDecorator = async (req, res) => {
   const { bookingId, decoratorId } = req.body;
