@@ -2,6 +2,23 @@ import { ObjectId } from "mongodb";
 import { decoratorsCollection } from "../models/DecoratorsModel.js";
 import { servicesBookingsCollection } from "../models/ServiceBookingsModel.js";
 
+// Get My Assigned Projects
+export const getMyAssignedProjects = async (req, res) => {
+  try {
+    const projects = await servicesBookingsCollection()
+      .find({
+        decoratorAssigned: true,
+      })
+      .toArray();
+
+    res.send(projects);
+  } catch (error) {
+    res.status(500).send({
+      message: "Failed to load assigned projects",
+    });
+  }
+};
+
 // Get all available decorators
 export const getAvailableDecorators = async (req, res) => {
   const decorators = await decoratorsCollection()
