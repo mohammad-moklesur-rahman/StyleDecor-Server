@@ -113,7 +113,7 @@ export const assignDecorator = async (req, res) => {
       $set: {
         decoratorId: new ObjectId(decoratorId),
         decoratorAssigned: true,
-        dec_status: "assigned",
+        dec_status: "Assigned",
         assigned_date: today,
       },
     }
@@ -127,3 +127,21 @@ export const assignDecorator = async (req, res) => {
 
   res.send({ success: true });
 };
+
+// Update Project Status
+export const updateProjectStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { dec_status } = req.body;
+
+    await servicesBookingsCollection().updateOne(
+      { _id: new ObjectId(id) },
+      { $set: { dec_status } }
+    );
+
+    res.send({ message: "Status updated successfully" });
+  } catch {
+    res.status(500).send({ message: "Update failed" });
+  }
+};
+

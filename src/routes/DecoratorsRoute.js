@@ -7,6 +7,7 @@ import {
   getAvailableDecorators,
   getMyAssignedProjects,
   getTodaySchedule,
+  updateProjectStatus,
 } from "../controllers/DecoratorsControllers.js";
 
 const router = express.Router();
@@ -31,5 +32,8 @@ router.patch("/disable/:decoratorId", disableDecorator);
 
 // Patch route to assign a decorator to a booking
 router.patch("/assign-decorator", assignDecorator);
+
+// Patch route for decorator can update the project status
+router.patch("/update-status/:id", updateProjectStatus);
 
 export default router;
