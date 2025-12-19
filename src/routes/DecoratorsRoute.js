@@ -6,12 +6,16 @@ import {
   getAllDecorators,
   getAvailableDecorators,
   getMyAssignedProjects,
+  getTodaySchedule,
 } from "../controllers/DecoratorsControllers.js";
 
 const router = express.Router();
 
 // Get route for My Assigned projects
 router.get("/my-projects", getMyAssignedProjects);
+
+// Get route for Today schedule
+router.get("/today-schedule", getTodaySchedule);
 
 // Get route for all decorators
 router.get("/", getAllDecorators);

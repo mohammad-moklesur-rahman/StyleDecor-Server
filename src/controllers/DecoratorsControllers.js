@@ -19,6 +19,23 @@ export const getMyAssignedProjects = async (req, res) => {
   }
 };
 
+// Get Today Schedule
+export const getTodaySchedule = async (req, res) => {
+  try {
+    const today = new Date().toISOString().split("T")[0];
+    const todayJobs = await servicesBookingsCollection()
+      .find({
+        decoratorAssigned: true,
+        assigned_date: today,
+      })
+      .toArray();
+
+    res.send(todayJobs);
+  } catch {
+    res.status(500).send({ message: "Failed to load schedule" });
+  }
+};
+
 // Get all available decorators
 export const getAvailableDecorators = async (req, res) => {
   const decorators = await decoratorsCollection()
@@ -75,6 +92,7 @@ export const disableDecorator = async (req, res) => {
 // Assign a decorator to a booking
 export const assignDecorator = async (req, res) => {
   const { bookingId, decoratorId } = req.body;
+  const today = new Date().toISOString().split("T")[0];
 
   // Get booking
   const booking = await servicesBookingsCollection().findOne({
@@ -96,6 +114,7 @@ export const assignDecorator = async (req, res) => {
         decoratorId: new ObjectId(decoratorId),
         decoratorAssigned: true,
         dec_status: "assigned",
+        assigned_date: today,
       },
     }
   );
