@@ -2,6 +2,12 @@ import { ObjectId } from "mongodb";
 import { usersCollection } from "../models/UsersModel.js";
 import { decoratorsCollection } from "../models/DecoratorsModel.js";
 
+// * get a user's role
+export const getUsersRole = async (req, res) => {
+  const result = await usersCollection().findOne({ email: req.tokenEmail });
+  res.send({ role: result?.role });
+};
+
 // * get All users
 export const getAllUsers = async (req, res) => {
   const users = await usersCollection().find().toArray();

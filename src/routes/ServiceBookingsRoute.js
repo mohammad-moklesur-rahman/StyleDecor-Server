@@ -6,6 +6,7 @@ import {
   getAllPaidBookings,
   getMyBookings,
 } from "../controllers/ServiceBookingsControllers.js";
+import verifyJWT from "../middleware/jwtAuthMiddleware.js";
 
 const router = express.Router();
 
@@ -22,6 +23,6 @@ router.get("/paid", getAllPaidBookings);
 router.post("/", createServiceBookings);
 
 // Delete Route for Canceling a Booking
-router.delete("/:id", deleteBooking);
+router.delete("/:id", verifyJWT, deleteBooking);
 
 export default router;
