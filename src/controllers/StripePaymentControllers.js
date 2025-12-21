@@ -26,6 +26,37 @@ export const getMyPaymentsHistory = async (req, res) => {
   }
 };
 
+// Get all payments
+export const getAllPayments = async (req, res) => {
+  try {
+    const { status, startDate, endDate } = req.query;
+
+    // Build dynamic query
+    const query = {};
+
+    if (status) {
+      query.status = "paid";
+    }
+
+    if (startDate && endDate) {
+      query.date = {
+        $gte: new Date(startDate),
+        $lte: new Date(endDate),
+      };
+    }
+
+    const payments = await stripePaymentsCollection()
+      .find(query)
+      .sort({ date: -1 })
+      .toArray();
+
+    res.send(payments);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: "Failed to fetch payments" });
+  }
+};
+
 // CREATE CHECKOUT SESSION
 export const createCheckoutSession = async (req, res) => {
   try {
