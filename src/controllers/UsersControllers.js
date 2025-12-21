@@ -2,6 +2,12 @@ import { ObjectId } from "mongodb";
 import { usersCollection } from "../models/UsersModel.js";
 import { decoratorsCollection } from "../models/DecoratorsModel.js";
 
+// * get a user profile
+export const getUserProfile = async (req, res) => {
+  const result = await usersCollection().findOne({ email: req.tokenEmail });
+  res.send(result);
+};
+
 // * get a user's role
 export const getUsersRole = async (req, res) => {
   const result = await usersCollection().findOne({ email: req.tokenEmail });
@@ -71,9 +77,32 @@ export const updateUserRole = async (req, res) => {
         status: "pending",
         isAvailable: false,
         createdAt: new Date(),
+        specialties: ["Wedding", "Birthday", "Party", "Celebration"],
       });
     }
   }
 
   res.send({ success: true });
+};
+
+// * Update user Profile
+export const updateUserProfile = async (req, res) => {
+  try {
+    const { name, photo } = req.body;
+    const email = req.tokenEmail;
+
+    if (!email) {
+      return res.status(403).send({ message: "Forbidden" });
+    }
+
+    const result = await usersCollection().findOneAndUpdate(
+      { email },
+      { $set: { name, photo } },
+      { returnDocument: "after" }
+    );
+
+    res.send(result.value);
+  } catch (err) {
+    res.status(500).send({ message: "Profile update failed" });
+  }
 };

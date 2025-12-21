@@ -5,12 +5,18 @@ import {
   disableDecorator,
   getAllDecorators,
   getAvailableDecorators,
+  getDecoratorProfile,
   getMyAssignedProjects,
   getTodaySchedule,
+  updateAvailability,
   updateProjectStatus,
 } from "../controllers/DecoratorsControllers.js";
+import verifyJWT from "../middleware/jwtAuthMiddleware.js";
 
 const router = express.Router();
+
+// Get route for Decorator Profile
+router.get("/my-profile", verifyJWT, getDecoratorProfile);
 
 // Get route for My Assigned projects
 router.get("/my-projects", getMyAssignedProjects);
@@ -23,6 +29,9 @@ router.get("/", getAllDecorators);
 
 // Get route for all available decorators
 router.get("/available", getAvailableDecorators);
+
+// Patch route for update availability
+router.patch("/:id/availability", verifyJWT, updateAvailability);
 
 // Patch route for approve decorator
 router.patch("/approve/:decoratorId", approveDecorator);

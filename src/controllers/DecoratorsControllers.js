@@ -2,6 +2,14 @@ import { ObjectId } from "mongodb";
 import { decoratorsCollection } from "../models/DecoratorsModel.js";
 import { servicesBookingsCollection } from "../models/ServiceBookingsModel.js";
 
+//  get a Decorator profile
+export const getDecoratorProfile = async (req, res) => {
+  const result = await decoratorsCollection().findOne({
+    email: req.tokenEmail,
+  });
+  res.send(result);
+};
+
 // Get My Assigned Projects
 export const getMyAssignedProjects = async (req, res) => {
   try {
@@ -53,6 +61,33 @@ export const getAllDecorators = async (req, res) => {
     .toArray();
 
   res.send(decorators);
+};
+
+// Update Availability
+export const updateAvailability = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { isAvailable } = req.body;
+
+    const decorator = await decoratorsCollection().findOne({
+      _id: new ObjectId(id),
+    });
+
+    // role + ownership check
+    if (decorator.email !== req.tokenEmail) {
+      return res.status(403).send({ message: "Forbidden" });
+    }
+
+    const result = await decoratorsCollection().findOneAndUpdate(
+      { _id: new ObjectId(id) },
+      { $set: { isAvailable } },
+      { returnDocument: "after" }
+    );
+
+    res.send(result.value);
+  } catch (err) {
+    res.status(500).send({ message: "Availability update failed" });
+  }
 };
 
 // Approve decorator
@@ -144,4 +179,3 @@ export const updateProjectStatus = async (req, res) => {
     res.status(500).send({ message: "Update failed" });
   }
 };
-
