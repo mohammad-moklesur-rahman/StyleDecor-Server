@@ -5,6 +5,7 @@ import {
   disableDecorator,
   getAllDecorators,
   getAvailableDecorators,
+  getDecoratorEarningsSummary,
   getDecoratorProfile,
   getMyAssignedProjects,
   getTodaySchedule,
@@ -17,6 +18,9 @@ const router = express.Router();
 
 // Get route for Decorator Profile
 router.get("/my-profile", verifyJWT, getDecoratorProfile);
+
+// Get route for Decorator Earnings Summary
+router.get("/earnings-summary", verifyJWT, getDecoratorEarningsSummary);
 
 // Get route for My Assigned projects
 router.get("/my-projects", getMyAssignedProjects);
@@ -40,7 +44,7 @@ router.patch("/approve/:decoratorId", approveDecorator);
 router.patch("/disable/:decoratorId", disableDecorator);
 
 // Patch route to assign a decorator to a booking
-router.patch("/assign-decorator", assignDecorator);
+router.patch("/assign-decorator", verifyJWT, assignDecorator);
 
 // Patch route for decorator can update the project status
 router.patch("/update-status/:id", updateProjectStatus);

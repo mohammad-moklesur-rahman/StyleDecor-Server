@@ -10,6 +10,56 @@ export const getDecoratorProfile = async (req, res) => {
   res.send(result);
 };
 
+// Get Decorator Earnings Summary
+export const getDecoratorEarningsSummary = async (req, res) => {
+  try {
+    const userEmail = req.tokenEmail;
+
+    // Find decorator by email
+    const decorator = await decoratorsCollection().findOne({
+      email: userEmail,
+    });
+    if (!decorator) {
+      return res.status(404).send({ message: "Decorator not found" });
+    }
+
+    const decoratorId = decorator._id;
+
+    // Fetch completed & paid projects
+    const projects = await servicesBookingsCollection()
+      .aggregate([
+        {
+          $match: {
+            decoratorId: decoratorId,
+            dec_status: "Completed",
+            paid: true,
+          },
+        },
+        {
+          $project: {
+            service_name: 1,
+            cost: 1,
+            booking_date: 1,
+            commission: { $multiply: ["$cost", 0.1] },
+          },
+        },
+      ])
+      .toArray();
+
+    const totalProjects = projects.length;
+    const totalCommission = projects.reduce((sum, p) => sum + p.commission, 0);
+
+    res.send({
+      totalProjects,
+      totalCommission,
+      projects,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: "Failed to load decorator dashboard" });
+  }
+};
+
 // Get My Assigned Projects
 export const getMyAssignedProjects = async (req, res) => {
   try {
