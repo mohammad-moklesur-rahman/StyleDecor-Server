@@ -9,7 +9,7 @@ export const getPaidUnassignedBookings = async (req, res) => {
         status: "Completed",
         $or: [
           { dec_status: { $exists: false } },
-          { dec_status: "Not Assigned" },
+          { dec_status: "not assigned" },
         ],
       })
       .toArray();

@@ -31,7 +31,7 @@ router.get("/my-projects", verifyJWT, verifyDecorator, getMyAssignedProjects);
 router.get("/today-schedule", verifyJWT, verifyDecorator, getTodaySchedule);
 
 // Get route for all decorators
-router.get("/", verifyJWT, getAllDecorators);
+router.get("/", getAllDecorators);
 
 // Get route for all available decorators
 router.get("/available", getAvailableDecorators);
