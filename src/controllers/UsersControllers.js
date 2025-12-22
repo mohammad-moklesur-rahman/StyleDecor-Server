@@ -14,10 +14,17 @@ export const getUsersRole = async (req, res) => {
   res.send({ role: result?.role });
 };
 
-// * get All users
+// * get all users except admin
 export const getAllUsers = async (req, res) => {
-  const users = await usersCollection().find().toArray();
-  res.send(users);
+  try {
+    const users = await usersCollection()
+      .find({ role: { $ne: "admin" } }) // not equal admin
+      .toArray();
+
+    res.send(users);
+  } catch (error) {
+    res.status(500).send({ message: "Failed to fetch users" });
+  }
 };
 
 // * Add new user or update last_loggedIn if user exists

@@ -8,6 +8,7 @@ import {
   updateUserRole,
 } from "../controllers/UsersControllers.js";
 import verifyJWT from "../middleware/jwtAuthMiddleware.js";
+import { verifyAdmin } from "../middleware/verifyAdmin.js";
 
 const router = express.Router();
 
@@ -15,13 +16,13 @@ const router = express.Router();
 router.get("/my-profile", verifyJWT, getUserProfile);
 
 // Get route for all users
-router.get("/", getAllUsers);
+router.get("/", verifyJWT, verifyAdmin, getAllUsers);
 
 // Get route for users role
 router.get("/role", verifyJWT, getUsersRole);
 
 // Patch route for updating user role
-router.patch("/role/:userId", updateUserRole);
+router.patch("/role/:userId", verifyJWT, verifyAdmin, updateUserRole);
 
 // Get route for user Profile
 router.put("/my-profile", verifyJWT, updateUserProfile);

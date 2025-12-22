@@ -63,8 +63,10 @@ export const getDecoratorEarningsSummary = async (req, res) => {
 // Get My Assigned Projects
 export const getMyAssignedProjects = async (req, res) => {
   try {
+    const email = req.tokenEmail;
     const projects = await servicesBookingsCollection()
       .find({
+        dec_email: email,
         decoratorAssigned: true,
       })
       .toArray();
@@ -80,9 +82,11 @@ export const getMyAssignedProjects = async (req, res) => {
 // Get Today Schedule
 export const getTodaySchedule = async (req, res) => {
   try {
+    const email = req.tokenEmail;
     const today = new Date().toISOString().split("T")[0];
     const todayJobs = await servicesBookingsCollection()
       .find({
+        dec_email: email,
         decoratorAssigned: true,
         assigned_date: today,
       })
@@ -191,11 +195,21 @@ export const assignDecorator = async (req, res) => {
     });
   }
 
+  // Get decorator to find email
+  const decorator = await decoratorsCollection().findOne({
+    _id: new ObjectId(decoratorId),
+  });
+
+  if (!decorator) {
+    return res.status(404).send({ message: "Decorator not found" });
+  }
+
   // Assign decorator
   await servicesBookingsCollection().updateOne(
     { _id: new ObjectId(bookingId) },
     {
       $set: {
+        dec_email: decorator.email,
         decoratorId: new ObjectId(decoratorId),
         decoratorAssigned: true,
         dec_status: "Assigned",

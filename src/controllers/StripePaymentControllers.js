@@ -10,7 +10,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 // * Get My Payments History
 export const getMyPaymentsHistory = async (req, res) => {
   try {
-    const userEmail = req.query.email;
+    const userEmail = req.tokenEmail;
 
     if (!userEmail) {
       return res.status(400).send({ message: "email required" });

@@ -13,10 +13,10 @@ const router = express.Router();
 router.get("/payments", verifyJWT, getAllPayments);
 
 // Get → My Payments History
-router.get("/payment-history", getMyPaymentsHistory)
+router.get("/payment-history", verifyJWT, getMyPaymentsHistory);
 
 // GET → Called after successful payment
-router.get("/payment-info", savePaymentInfo);
+router.get("/payment-info", verifyJWT, savePaymentInfo);
 
 // POST → Create Stripe session
 router.post("/create-checkout-session", createCheckoutSession);

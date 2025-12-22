@@ -1,6 +1,25 @@
 import { ObjectId } from "mongodb";
 import { servicesBookingsCollection } from "../models/ServiceBookingsModel.js";
 
+// Get paid bookings where decorator is NOT assigned - Admin
+export const getPaidUnassignedBookings = async (req, res) => {
+  try {
+    const bookings = await servicesBookingsCollection()
+      .find({
+        status: "Completed",
+        $or: [
+          { dec_status: { $exists: false } },
+          { dec_status: "Not Assigned" },
+        ],
+      })
+      .toArray();
+
+    res.send(bookings);
+  } catch (error) {
+    res.status(500).send({ message: "Failed to load bookings" });
+  }
+};
+
 // Get All Paid Bookings - Admin
 export const getAllPaidBookings = async (req, res) => {
   try {
@@ -34,7 +53,7 @@ export const getAllBookings = async (req, res) => {
 // * Get My Bookings
 export const getMyBookings = async (req, res) => {
   try {
-    const userEmail = req.query.email;
+    const userEmail = req.tokenEmail;
 
     if (!userEmail) {
       return res.status(400).send({ message: "email required" });
